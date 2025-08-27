@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Knockout Kings: Duel Mode</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: sans-serif;
+      background-color: #f0f0f0;
+    }
+
+    h1 {
+      margin-top: 30px;
+      font-size: 2em;
+      color: #333;
+    }
+
+    #game {
+      display: flex;
+      justify-content: space-around;
+      margin: 50px;
+    }
+
+    .boxer {
+      font-size: 100px;
+      transition: transform 0.2s;
+    }
+
+    #health {
+      font-size: 20px;
+      margin-top: 20px;
+    }
+
+    #health span {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Knockout Kings: Duel Mode</h1>
+  <div id="game">
+    <div id="player1" class="boxer">🥊</div>
+    <div id="player2" class="boxer">🥊</div>
+  </div>
+  <div id="health">
+    <p>Player 1 Health: <span id="health1">100</span></p>
+    <p>Player 2 Health: <span id="health2">100</span></p>
+  </div>
+
+  <script>
+    let health1 = 100;
+    let health2 = 100;
+
+    document.addEventListener("keydown", (e) => {
+      const p1 = document.getElementById("player1");
+      const p2 = document.getElementById("player2");
+
+      if (e.key === "a") {
+        // Player 1 punches
+        p1.style.transform = "translateX(20px)";
+        health2 -= 10;
+      } else if (e.key === "d") {
+        // Player 1 dodges
+        p1.style.transform = "translateX(-20px)";
+      } else if (e.key === "ArrowLeft") {
+        // Player 2 punches
+        p2.style.transform = "translateX(-20px)";
+        health1 -= 10;
+      } else if (e.key === "ArrowRight") {
+        // Player 2 dodges
+        p2.style.transform = "translateX(20px)";
+      }
+
+      // Reset position
+      setTimeout(() => {
+        p1.style.transform = "translateX(0)";
+        p2.style.transform = "translateX(0)";
+      }, 200);
+
+      // Update health
+      document.getElementById("health1").textContent = Math.max(health1, 0);
+      document.getElementById("health2").textContent = Math.max(health2, 0);
+
+      // Check win condition
+      if (health1 <= 0) {
+        alert("Player 2 Wins!");
+        resetGame();
+      }
+      if (health2 <= 0) {
+        alert("Player 1 Wins!");
+        resetGame();
+      }
+    });
+
+    function resetGame() {
+      health1 = 100;
+      health2 = 100;
+      document.getElementById("health1").textContent = health1;
+      document.getElementById("health2").textContent = health2;
+    }
+  </script>
+</body>
+</html>
